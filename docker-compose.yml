@@ -1,0 +1,29 @@
+services:
+    rusty-gates-server:
+        build:
+            context: ./server
+            dockerfile: Dockerfile
+        ports:
+            - "34543"
+        volumes:
+            - ./data:/app/data
+        networks:
+            - nandnet
+
+    rusty-gates-client:
+        build:
+            context: ./client
+            dockerfile: Dockerfile
+        ports:
+            - "3000"
+        networks:
+            - nandnet
+        environment:
+            - SERVER_IP=rusty-gates-server
+            - SERVER_PORT=34543
+        stdin_open: true
+        tty: true
+
+networks:
+    nandnet:
+        driver: bridge
